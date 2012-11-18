@@ -1,0 +1,4 @@
+D:\github\cqrsinv\CQRSInv\CQRSInv\bin\Debug\CQRSInv.dll
+D:\github\cqrsinv\CQRSInv\CQRSInv\bin\Debug\CQRSInv.pdb
+D:\github\cqrsinv\CQRSInv\CQRSInv\obj\Debug\CQRSInv.dll
+D:\github\cqrsinv\CQRSInv\CQRSInv\obj\Debug\CQRSInv.pdb
