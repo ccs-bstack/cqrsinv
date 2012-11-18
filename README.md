@@ -1,0 +1,4 @@
+cqrsinv
+=======
+
+Some CQRS Investigation
