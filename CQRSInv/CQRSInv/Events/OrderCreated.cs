@@ -5,7 +5,7 @@ namespace CQRSInv.Events
 	[Serializable]
 	public class OrderCreated : CQRSInv.Events.DomainEvent
 	{
-		public Guid Id { get; private set; }
+		public Guid OrderId { get; private set; }
 		public string Description { get; private set; }
 
 		public OrderCreated(
@@ -14,7 +14,7 @@ namespace CQRSInv.Events
 		{
 			// DBC checks here
 
-			this.Id = id;
+			this.OrderId = id;
 			this.Description = description;
 		}
 	}

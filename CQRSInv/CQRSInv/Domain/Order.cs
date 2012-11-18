@@ -6,12 +6,16 @@ using System.Text;
 
 namespace CQRSInv.Domain
 {
-	public class Order : CQRSInv.EventStore.BaseAggregateRoot<CQRSInv.Events.IDomainEvent>
+	public class Order : CQRSInv.Domain.BaseAggregateRoot<CQRSInv.Events.IDomainEvent>
 	{
+		private string c_description;
+
+
 		public Order()
 		{
 			// init methods
 			// register events
+			this.RegisterEvents();
 		}
 
 
@@ -26,6 +30,20 @@ namespace CQRSInv.Domain
 			string description)
 		{
 			return new Order(Guid.NewGuid(), description);
+		}
+
+
+		private void RegisterEvents()
+		{
+			RegisterEvent<CQRSInv.Events.OrderCreated>(OnNewOrderCreated);
+		}
+
+
+		private void OnNewOrderCreated(
+			CQRSInv.Events.OrderCreated @event)
+		{
+			this.Id = @event.Id;
+			this.c_description = @event.Description;
 		}
 	}
 }

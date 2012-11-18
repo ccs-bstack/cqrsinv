@@ -40,15 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Domain\Order.cs" />
-    <Compile Include="EventStore\BaseAggregateRoot.cs" />
+    <Compile Include="Domain\BaseAggregateRoot.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\OrderCreated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="EventStore\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

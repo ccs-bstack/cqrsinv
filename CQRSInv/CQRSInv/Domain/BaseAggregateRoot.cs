@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 
 
-namespace CQRSInv.EventStore
+namespace CQRSInv.Domain
 {
 	public class BaseAggregateRoot<TDomainEvent> //:
 		//IEventProvider<TDomainEvent>,
 		//IRegisterChildEntities<TDomainEvent>
 		where TDomainEvent : CQRSInv.Events.IDomainEvent
 	{
-		private readonly Dictionary<Type, Action<TDomainEvent>> _registeredEvents;
-		private readonly List<TDomainEvent> _appliedEvents;
+		private readonly Dictionary<Type, Action<TDomainEvent>> c_registeredEvents;
+		private readonly List<TDomainEvent> c_appliedEvents;
 		//private readonly List<IEntityEventProvider<TDomainEvent>> _childEventProviders;
 
 		public Guid Id { get; protected set; }
@@ -21,22 +21,25 @@ namespace CQRSInv.EventStore
 
 		public BaseAggregateRoot()
 		{
-			_registeredEvents = new Dictionary<Type, Action<TDomainEvent>>();
-			_appliedEvents = new List<TDomainEvent>();
+			this.c_registeredEvents = new Dictionary<Type, Action<TDomainEvent>>();
+			this.c_appliedEvents = new List<TDomainEvent>();
 			//_childEventProviders = new List<IEntityEventProvider<TDomainEvent>>();
 		}
 
-		//protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, TDomainEvent
-		//{
-		//    _registeredEvents.Add(typeof(TEvent), theEvent => eventHandler(theEvent as TEvent));
-		//}
+		protected void RegisterEvent<TEvent>(
+			Action<TEvent> eventHandler) where TEvent : class, TDomainEvent
+		{
+			this.c_registeredEvents.Add(typeof(TEvent), theEvent => eventHandler(theEvent as TEvent));
+		}
 
-		protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, TDomainEvent
+
+		protected void Apply<TEvent>(
+			TEvent domainEvent) where TEvent : class, TDomainEvent
 		{
 			domainEvent.AggregateId = Id;
 			domainEvent.Version = GetNewEventVersion();
 			apply(domainEvent.GetType(), domainEvent);
-			_appliedEvents.Add(domainEvent);
+			this.c_appliedEvents.Add(domainEvent);
 		}
 
 
@@ -46,7 +49,7 @@ namespace CQRSInv.EventStore
 		{
 			Action<TDomainEvent> handler;
 
-			if (!_registeredEvents.TryGetValue(eventType, out handler))
+			if (!this.c_registeredEvents.TryGetValue(eventType, out handler))
 			{
 				//throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
 			}
