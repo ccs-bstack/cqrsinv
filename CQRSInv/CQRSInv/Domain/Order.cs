@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using CQRSInv.Domain.Momento;
 
 
 namespace CQRSInv.Domain
 {
-	public class Order : CQRSInv.Domain.BaseAggregateRoot<CQRSInv.Events.IDomainEvent>
+	public class Order : CQRSInv.Domain.BaseAggregateRoot<CQRSInv.Events.IDomainEvent>, CQRSInv.Domain.Momento.IBehaviour
 	{
 		private string c_description;
 
@@ -14,28 +12,28 @@ namespace CQRSInv.Domain
 		public Order()
 		{
 			// init methods
-			// register events
+
 			this.RegisterEvents();
 		}
 
 
 		private Order(
-			Guid id,
 			string description): this()
 		{
 			Apply(new CQRSInv.Events.OrderCreated(Guid.NewGuid(), description));
 		}
 
+
 		public static Order CreateNew(
 			string description)
 		{
-			return new Order(Guid.NewGuid(), description);
+			return new Order(description);
 		}
 
 
 		private void RegisterEvents()
 		{
-			RegisterEvent<CQRSInv.Events.OrderCreated>(OnNewOrderCreated);
+			this.RegisterEvent<CQRSInv.Events.OrderCreated>(OnNewOrderCreated);
 		}
 
 
@@ -44,6 +42,22 @@ namespace CQRSInv.Domain
 		{
 			this.Id = @event.Id;
 			this.c_description = @event.Description;
+		}
+
+
+		public CQRSInv.Domain.Momento.IMemento CreateMemento()
+		{
+			return new CQRSInv.Domain.Momento.Order(
+				base.Id,
+				this.c_description);
+		}
+
+
+		public void SetMemento(
+			CQRSInv.Domain.Momento.IMemento memento)
+		{
+			// TODO: Pending ...
+			throw new NotImplementedException();
 		}
 	}
 }
